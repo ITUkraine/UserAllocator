@@ -29,6 +29,7 @@ proguard/
 
 # Eclipse Metadata
 .metadata/
+/gradle
 
 # Mac OS X clutter
 *.DS_Store

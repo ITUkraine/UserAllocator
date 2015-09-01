@@ -2,36 +2,43 @@ package jobsukraine.com.ua.userallocator;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
+
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MainActivity extends AppCompatActivity {
+
+    SupportMapFragment mapFragment;
+    GoogleMap map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        map = mapFragment.getMap();
+        if (map == null) {
+            finish();
+            return;
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btnAddOne:
+                map.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("First marker"));
+                break;
+            case R.id.btnAddTwo:
+                map.addMarker(new MarkerOptions().position(new LatLng(41, 0)).title("Second marker"));
+                break;
+            case R.id.btnClear:
+                map.clear();
+                break;
+        }
     }
 }

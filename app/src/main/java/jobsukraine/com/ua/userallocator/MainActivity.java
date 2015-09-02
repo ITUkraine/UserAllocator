@@ -1,5 +1,6 @@
 package jobsukraine.com.ua.userallocator;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -36,7 +37,24 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        setMarkers(10);
+        launchRingDialog();
+    }
+
+    public void launchRingDialog() {
+        final ProgressDialog ringProgressDialog = ProgressDialog.show(MainActivity.this, "Please wait ...", "Updating map ...", true);
+        ringProgressDialog.setCancelable(true);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1000);
+                    setMarkers(10);
+                } catch (Exception e) {
+
+                }
+                ringProgressDialog.dismiss();
+            }
+        }).start();
     }
 
     private void setMarkers(int maxAmountOfMarkers) {
@@ -62,6 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClick(View view) {
         map.clear();
-        setMarkers(10);
+        launchRingDialog();
     }
 }

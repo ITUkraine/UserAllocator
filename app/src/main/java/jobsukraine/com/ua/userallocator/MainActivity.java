@@ -2,17 +2,27 @@ package jobsukraine.com.ua.userallocator;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.FindCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    SupportMapFragment mapFragment;
-    GoogleMap map;
+    private SupportMapFragment mapFragment;
+    private GoogleMap map;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,19 +36,35 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return;
         }
+
+
+        Parse.initialize(this, getString(R.string.parse_application_id), getString(R.string.parse_client_key));
+        setMarkers(10);
+    }
+
+    private void setMarkers(int maxAmountOfMarkers) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Person");
+        query.setLimit(maxAmountOfMarkers);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> userList, ParseException e) {
+                if (e == null) {
+                    if (userList.size() > 0) {
+                        for (int i = 0; i < userList.size(); i++) {
+                            ParseObject p = userList.get(i);
+                            ParseGeoPoint geoPoint = p.getParseGeoPoint("Location");
+                            map.addMarker(new MarkerOptions().position(new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude())).title(p.getString("Name")));
+                        }
+                    }
+                } else {
+                    Log.d("score", "Error: " + e.getMessage());
+                }
+            }
+        });
     }
 
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btnAddOne:
-                map.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("First marker"));
-                break;
-            case R.id.btnAddTwo:
-                map.addMarker(new MarkerOptions().position(new LatLng(41, 0)).title("Second marker"));
-                break;
-            case R.id.btnClear:
-                map.clear();
-                break;
-        }
+        map.clear();
+        setMarkers(10);
     }
 }

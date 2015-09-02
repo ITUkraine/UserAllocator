@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">UserAllocator</string>
 
-    <string name="add_first_marker">Add first</string>
-    <string name="add_second_marker">Add second</string>
-    <string name="clear_map">Clear</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="refresh">Refresh</string>
+
+    <string name="parse_application_id">IFIBKDoD0J4MPwmXNn4ZtM4w8bZVmBI8xIhD9VDs</string>
+    <string name="parse_client_key">IKQHmMPVyEMbo7HRxVh0QYc0HuSNLxKP5WIq2XfF</string>
 </resources>

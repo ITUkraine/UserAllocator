@@ -10,7 +10,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -37,8 +36,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-
-        Parse.initialize(this, getString(R.string.parse_application_id), getString(R.string.parse_client_key));
         setMarkers(10);
     }
 
